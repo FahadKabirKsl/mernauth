@@ -67,6 +67,10 @@ const ProfileScreen = () => {
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
+        <Form.Group className="my-2" controlId="role">
+          <Form.Label>Role</Form.Label>
+          <Form.Control plaintext readOnly defaultValue={userInfo.role} />
+        </Form.Group>
         <Form.Group className="my-2" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control

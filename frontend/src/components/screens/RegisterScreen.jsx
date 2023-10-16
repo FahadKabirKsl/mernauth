@@ -13,6 +13,7 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState("moneyLendingIndividual");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,6 +63,20 @@ const RegisterScreen = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
+        </Form.Group>
+        <Form.Group className="my-2" controlId="role">
+          <Form.Label>Role</Form.Label>
+          <Form.Control
+            as="select"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <option value="moneyLendingCompany">Money Lending Company</option>
+            <option value="moneyLendingIndividual">
+              Money Lending Individual
+            </option>
+            <option value="agentCompany">Agent Company</option>
+          </Form.Control>
         </Form.Group>
 
         <Form.Group className="my-2" controlId="password">
