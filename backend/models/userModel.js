@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema(
         "moneyLendingIndividual",
         "agentCompany",
       ],
-      default: "moneyLendingIndividual", // default role can be set here
+      default: "admin", // default role can be set here
     },
     password: {
       type: String,

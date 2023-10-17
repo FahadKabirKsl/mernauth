@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/userModel.js";
+import AgentCompany from "../models/agentCompanyModels.js";
 
 // @desc Auth user/set token
 // route POST /api/users/auth
@@ -39,6 +40,16 @@ const registerUser = asyncHandler(async (req, res) => {
     password,
     role,
   });
+  // If the user's role is agentCompany, create an entry in the AgentCompany model
+  if (role === "agentCompany") {
+    const agentCompany = new AgentCompany({
+      name,
+      email,
+      password, // Make sure to handle password securely
+      role,
+    });
+    await agentCompany.save();
+  }
   if (user) {
     generateToken(res, user._id);
     res.status(201).json({
@@ -87,6 +98,28 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     if (req.body.password) {
       user.password = req.body.password;
     }
+    if (user.role === "agentCompany") {
+      const updatedAgentCompany = await AgentCompany.findOneAndUpdate(
+        { email: user.email },
+        {
+          name: user.name,
+          email: user.email,
+        },
+        { new: true, useFindAndModify: false } // Options to return the modified document and to use the new findOneAndUpdate method
+      );
+
+      if (!updatedAgentCompany) {
+        const agentCompany = new AgentCompany({
+          name: user.name,
+          email: user.email,
+          role: "agentCompany", // Set the role as necessary
+          password: user.password, // Make sure to handle the password securely
+          avatar: user.avatar, // Adjust based on your application requirements
+        });
+        await agentCompany.save();
+      }
+    }
+
     const updatedUser = await user.save();
 
     res.status(200).json({
