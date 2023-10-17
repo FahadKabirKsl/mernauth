@@ -6,7 +6,7 @@ import AgentCompany from "../models/agentCompanyModels.js"; // Assuming you have
 // Controller function for adding agents
 const addAgent = asyncHandler(async (req, res) => {
   const { name, email, nid, address, number, agentAvatar } = req.body;
-  const agentCompanyName = req.user.name;
+  // const agentCompanyName = req.user.name;
 
   // Check if the requesting user is an agent company
   if (req.user.role !== "agentCompany") {
@@ -16,7 +16,7 @@ const addAgent = asyncHandler(async (req, res) => {
 
   const agent = await Agent.create({
     name,
-    agentCompanyName: req.user._id,
+    agentCompany: req.user._id,
     email,
     nid,
     number,
@@ -31,28 +31,32 @@ const addAgent = asyncHandler(async (req, res) => {
     throw new Error("Invalid agent data");
   }
 });
-// Controller function to get all agents
-// const getAllAgents = asyncHandler(async (req, res) => {
-//   const agents = await Agent.find({ agentCompanyName: req.user._id });
-//   res.json(agents);
-// });
 
-// Controller function to get all agent companies
-// const getAllAgentCompanies = asyncHandler(async (req, res) => {
-//   const agentCompanies = await User.find({ role: "agentCompany" });
-//   res.json(agentCompanies);
-// });
-// Controller function to get all agents for money lending companies or individuals
 const getAllAgents = asyncHandler(async (req, res) => {
-  if (req.user.role !== "moneyLendingCompany" && req.user.role !== "moneyLendingIndividual") {
+  if (
+    req.user.role !== "moneyLendingCompany" &&
+    req.user.role !== "moneyLendingIndividual"
+  ) {
     res.status(401);
     throw new Error("Not authorized to view agents");
   }
 
-  const agents = await Agent.find({});
+  const agents = await Agent.find({}).populate("agentCompany");
   res.json(agents);
 });
+// Controller function to get all agents for the current agent company
+const getAgentsForCompany = asyncHandler(async (req, res) => {
+  if (req.user.role !== "agentCompany") {
+    res.status(401);
+    throw new Error("Not authorized to view agents");
+  }
 
+  const agents = await Agent.find({ agentCompanyName: req.user._id }).populate(
+    "agentCompanyName",
+    "name"
+  );
+  res.json(agents);
+});
 // Controller function to get all agent companies
 const getAllAgentCompanies = asyncHandler(async (req, res) => {
   if (req.user.role === "agentCompany") {
@@ -64,20 +68,9 @@ const getAllAgentCompanies = asyncHandler(async (req, res) => {
   res.json(agentCompanies);
 });
 
-// Controller function to get all agents for the current agent company
-const getAgentsForCompany = asyncHandler(async (req, res) => {
-  if (req.user.role !== "agentCompany") {
-    res.status(401);
-    throw new Error("Not authorized to view agents");
-  }
-
-  const agents = await Agent.find({ agentCompanyName: req.user._id });
-  res.json(agents);
-});
-
 // Controller function to report agent as fraud/good with an incident
 const reportAgent = asyncHandler(async (req, res) => {
-  const { agentId, incident, isGood } = req.body;
+  const { incident, isGood } = req.body;
 
   if (
     req.user.role !== "moneyLendingCompany" &&
@@ -87,7 +80,7 @@ const reportAgent = asyncHandler(async (req, res) => {
     throw new Error("Not authorized to report agents");
   }
 
-  const agent = await Agent.findById(agentId);
+  const agent = await Agent.findById(req.params.id);
 
   if (agent) {
     agent.incident = incident;
@@ -113,7 +106,7 @@ const reportAgent = asyncHandler(async (req, res) => {
 
 // Controller function to report agent company as fraud/good with an incident
 const reportAgentCompany = asyncHandler(async (req, res) => {
-  const { agentCompanyId, incident, isGood } = req.body;
+  const { incident, isGood } = req.body;
 
   if (
     req.user.role !== "moneyLendingCompany" &&
@@ -123,7 +116,7 @@ const reportAgentCompany = asyncHandler(async (req, res) => {
     throw new Error("Not authorized to report agent companies");
   }
 
-  const agentCompany = await AgentCompany.findById(agentCompanyId);
+  const agentCompany = await AgentCompany.findById(req.params.id);
 
   if (agentCompany) {
     agentCompany.incident = incident;
@@ -142,5 +135,5 @@ export {
   getAllAgentCompanies,
   reportAgent,
   reportAgentCompany,
-  getAgentsForCompany
+  getAgentsForCompany,
 };

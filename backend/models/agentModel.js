@@ -5,7 +5,7 @@ const agentSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  agentCompanyName: {
+  agentCompany: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "AgentCompany",
     // required: true,
@@ -27,6 +27,11 @@ const agentSchema = mongoose.Schema({
   address: {
     type: String,
     required: true,
+  },
+
+  incident: {
+    type: String,
+    // required: true,
   },
   agentAvatar: {
     type: String, // You may want to store a path to the image or use a specific data type based on your application requirements
