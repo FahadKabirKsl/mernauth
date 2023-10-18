@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import Agent from "../models/agentModel.js";
 import AgentCompany from "../models/agentCompanyModels.js"; // Assuming you have an AgentCompany model
+import Banned from "../models/bannedModel.js";
 // Controller function for adding agents
 const addAgent = asyncHandler(async (req, res) => {
   const { name, email, nid, address, number, agentAvatar } = req.body;
@@ -10,6 +11,27 @@ const addAgent = asyncHandler(async (req, res) => {
   if (req.user.role !== "agentCompany") {
     res.status(401);
     throw new Error("Not authorized to add agents");
+  }
+  // Logic to check if the agent's email, number, or nid is banned
+  const bannedAgent = await Banned.findOne({
+    $or: [
+      { email: email, isAgent: true },
+      { number: number, isAgent: true },
+      { nid: nid, isAgent: true },
+    ],
+  });
+  if (bannedAgent) {
+    res.status(403);
+    throw new Error("Banned agent cannot be added again");
+  }
+  // Check if the agent with the same email, number, or nid already exists
+  const existingAgent = await Agent.findOne({
+    $or: [{ email: email }, { number: number }, { nid: nid }],
+  });
+
+  if (existingAgent) {
+    res.status(400);
+    throw new Error("Agent already exists");
   }
   const agentCompany = {
     id: req.user._id,

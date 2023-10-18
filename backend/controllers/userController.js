@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/userModel.js";
 import AgentCompany from "../models/agentCompanyModels.js";
+import Banned from "../models/bannedModel.js";
 
 // @desc Auth user/set token
 // route POST /api/users/auth
@@ -30,6 +31,11 @@ const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, role } = req.body;
 
   const userExists = await User.findOne({ email });
+  const bannedUser = await Banned.findOne({ email: email });
+  if (bannedUser) {
+    res.status(403);
+    throw new Error("Banned user cannot be registered again");
+  }
   if (userExists) {
     res.status(400);
     throw new Error("User already exists");

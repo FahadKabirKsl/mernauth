@@ -22,6 +22,7 @@ const agentSchema = mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   nid: {
     type: Number,
