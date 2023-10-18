@@ -36,6 +36,10 @@ const agentCompanySchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  isBanned: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const AgentCompany = mongoose.model("AgentCompany", agentCompanySchema);

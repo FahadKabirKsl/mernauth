@@ -21,6 +21,7 @@ const userSchema = mongoose.Schema(
         "agentCompany",
       ],
       default: "admin", // default role can be set here
+      required: true,
     },
     password: {
       type: String,
