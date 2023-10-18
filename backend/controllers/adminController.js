@@ -47,28 +47,6 @@ const banAgent = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
-
-// const banAgentCompany = asyncHandler(async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const agentCompany = await AgentCompany.findById(id);
-//     if (agentCompany) {
-//       // Logic to create the banned entity
-//       await Banned.create({
-//         email: agentCompany.email,
-//         isAgent: false,
-//         isCompany: true,
-//       });
-//       await AgentCompany.findByIdAndRemove(id);
-//       res.json({ message: "Agent company banned successfully" });
-//     } else {
-//       res.status(404).json({ message: "Agent company not found" });
-//     }
-//   } catch (error) {
-//     console.error("Error banning agent company:", error);
-//     res.status(500).json({ message: "Server Error" });
-//   }
-// });
 const banAgentCompany = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
