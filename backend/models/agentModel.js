@@ -6,9 +6,18 @@ const agentSchema = mongoose.Schema({
     required: true,
   },
   agentCompany: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "AgentCompany",
-    // required: true,
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "AgentCompany",
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
   },
   email: {
     type: String,

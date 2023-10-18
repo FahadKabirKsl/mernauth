@@ -2,21 +2,23 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import Agent from "../models/agentModel.js";
 import AgentCompany from "../models/agentCompanyModels.js"; // Assuming you have an AgentCompany model
-
 // Controller function for adding agents
 const addAgent = asyncHandler(async (req, res) => {
   const { name, email, nid, address, number, agentAvatar } = req.body;
-  // const agentCompanyName = req.user.name;
 
   // Check if the requesting user is an agent company
   if (req.user.role !== "agentCompany") {
     res.status(401);
     throw new Error("Not authorized to add agents");
   }
-
+  const agentCompany = {
+    id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+  };
   const agent = await Agent.create({
     name,
-    agentCompany: req.user._id,
+    agentCompany,
     email,
     nid,
     number,
@@ -25,13 +27,13 @@ const addAgent = asyncHandler(async (req, res) => {
   });
 
   if (agent) {
+    console.log("New Agent Added: ", agent);
     res.status(201).json(agent);
   } else {
     res.status(400);
     throw new Error("Invalid agent data");
   }
 });
-
 const getAllAgents = asyncHandler(async (req, res) => {
   if (
     req.user.role !== "moneyLendingCompany" &&
@@ -51,10 +53,12 @@ const getAgentsForCompany = asyncHandler(async (req, res) => {
     throw new Error("Not authorized to view agents");
   }
 
-  const agents = await Agent.find({ agentCompanyName: req.user._id }).populate(
-    "agentCompanyName",
-    "name"
-  );
+  console.log("Current user ID: ", req.user._id); // Check the current user ID
+  // Assuming the agentCompany field in the Agent schema references the AgentCompany model correctly
+  const agents = await Agent.find({ "agentCompany.id": req.user._id });
+
+  console.log("Agents: ", agents); // Check the resulting agents
+
   res.json(agents);
 });
 // Controller function to get all agent companies
@@ -67,11 +71,9 @@ const getAllAgentCompanies = asyncHandler(async (req, res) => {
   const agentCompanies = await AgentCompany.find({});
   res.json(agentCompanies);
 });
-
 // Controller function to report agent as fraud/good with an incident
 const reportAgent = asyncHandler(async (req, res) => {
   const { incident, isGood } = req.body;
-
   if (
     req.user.role !== "moneyLendingCompany" &&
     req.user.role !== "moneyLendingIndividual"
@@ -79,13 +81,10 @@ const reportAgent = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Not authorized to report agents");
   }
-
   const agent = await Agent.findById(req.params.id);
-
   if (agent) {
     agent.incident = incident;
     agent.isGood = isGood;
-
     await agent.save();
     // Update AgentCompany table if necessary
     if (agent.agentCompanyName) {
@@ -103,7 +102,6 @@ const reportAgent = asyncHandler(async (req, res) => {
     throw new Error("Agent not found");
   }
 });
-
 // Controller function to report agent company as fraud/good with an incident
 const reportAgentCompany = asyncHandler(async (req, res) => {
   const { incident, isGood } = req.body;
