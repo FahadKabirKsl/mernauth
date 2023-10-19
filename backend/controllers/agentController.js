@@ -49,7 +49,7 @@ const addAgent = asyncHandler(async (req, res) => {
   });
 
   if (agent) {
-    console.log("New Agent Added: ", agent);
+    // console.log("New Agent Added: ", agent);
     res.status(201).json(agent);
   } else {
     res.status(400);
@@ -75,11 +75,11 @@ const getAgentsForCompany = asyncHandler(async (req, res) => {
     throw new Error("Not authorized to view agents");
   }
 
-  console.log("Current user ID: ", req.user._id); // Check the current user ID
+  // console.log("Current user ID: ", req.user._id); // Check the current user ID
   // Assuming the agentCompany field in the Agent schema references the AgentCompany model correctly
   const agents = await Agent.find({ "agentCompany.id": req.user._id });
 
-  console.log("Agents: ", agents); // Check the resulting agents
+  // console.log("Agents: ", agents); // Check the resulting agents
 
   res.json(agents);
 });
