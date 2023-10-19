@@ -13,10 +13,10 @@ import {
 const router = express.Router();
 
 // Route for adding agents
-router.post("/add", protect, addAgent);
+router.post("/add-agent", protect, addAgent);
 
 // Route for viewing all agents
-router.get("/agents", protect, getAllAgents);
+router.get("/list-agents", protect, getAllAgents);
 // Route for viewing agents for the current agent company
 router.get("/myagents", protect, getAgentsForCompany);
 
