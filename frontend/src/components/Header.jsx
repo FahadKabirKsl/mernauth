@@ -1,5 +1,6 @@
 import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import { FaPersonShelter, FaPersonBreastfeeding } from "react-icons/fa6";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -20,18 +21,76 @@ const Header = () => {
       console.error(err);
     }
   };
+  // admin
+  const renderAdminLinks = () => {
+    if (userInfo && userInfo.role === "admin") {
+      return (
+        <>
+          <LinkContainer to="/agent-company">
+            <Nav.Link>Agent Company</Nav.Link>
+          </LinkContainer>
+          <LinkContainer to="/agent-list">
+            <Nav.Link>Agent List</Nav.Link>
+          </LinkContainer>
+          <LinkContainer to="/banned">
+            <Nav.Link>Banned</Nav.Link>
+          </LinkContainer>
+        </>
+      );
+    }
+  };
+  // agent company
+  const renderAgentCompanyLinks = () => {
+    if (userInfo && userInfo.role === "agentCompany") {
+      return (
+        <>
+          <LinkContainer to="/add-agent">
+            <Nav.Link>Add Agent</Nav.Link>
+          </LinkContainer>
+          <LinkContainer to="/my-agents">
+            <Nav.Link>My Agents</Nav.Link>
+          </LinkContainer>
+        </>
+      );
+    }
+  };
+  // users
+  const renderMoneyLendingLinks = () => {
+    if (
+      userInfo &&
+      (userInfo.role === "moneyLendingCompany" ||
+        userInfo.role === "moneyLendingIndividual")
+    ) {
+      return (
+        <>
+          <LinkContainer to="/agent-list">
+            <Nav.Link>Agent / Agent Company List</Nav.Link>
+          </LinkContainer>
+          <LinkContainer to="/report-agent">
+            <Nav.Link>Report Agent</Nav.Link>
+          </LinkContainer>
+          <LinkContainer to="/report-agent-company">
+            <Nav.Link>Report Agent Company</Nav.Link>
+          </LinkContainer>
+        </>
+      );
+    }
+  };
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>MERN App</Navbar.Brand>
+            <Navbar.Brand>Fraudulent</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               {userInfo ? (
                 <>
+                  {renderAdminLinks()}
+                  {renderAgentCompanyLinks()}
+                  {renderMoneyLendingLinks()}
                   <NavDropdown
                     // title={userInfo.name}
                     title={`${userInfo.name} - ${userInfo.role}`}
