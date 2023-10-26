@@ -16,6 +16,8 @@ import LoginScreen from "./components/screens/LoginScreen.jsx";
 import RegisterScreen from "./components/screens/RegisterScreen.jsx";
 import ProfileScreen from "./components/screens/ProfileScreen";
 import PrivateRoute from "./components/PrivateRoute";
+import AddAgentScreen from "./components/screens/Agents/AddAgentScreen";
+import MyAgentScreen from "./components/screens/Agents/MyAgentScreen";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +28,8 @@ const router = createBrowserRouter(
       <Route path="" element={<PrivateRoute />}>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/profile" element={<ProfileScreen />} />
+        <Route path="/add-agent" element={<AddAgentScreen />} />
+        <Route path="/myagents" element={<MyAgentScreen />} />
       </Route>
     </Route>
   )

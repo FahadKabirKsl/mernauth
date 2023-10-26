@@ -3,7 +3,7 @@ import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { FaPersonShelter, FaPersonBreastfeeding } from "react-icons/fa6";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { logout } from "../slices/authSlice";
 
@@ -11,6 +11,7 @@ const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [logoutApiCall] = useLogoutMutation();
   const logoutHandler = async () => {
     try {
@@ -27,7 +28,9 @@ const Header = () => {
       return (
         <>
           <LinkContainer to="/agent-company">
-            <Nav.Link>Agent Company</Nav.Link>
+            <Nav.Link active={location.pathname === "/agent-company"}>
+              Agent Company
+            </Nav.Link>
           </LinkContainer>
           <LinkContainer to="/agent-list">
             <Nav.Link>Agent List</Nav.Link>
@@ -47,8 +50,10 @@ const Header = () => {
           <LinkContainer to="/add-agent">
             <Nav.Link>Add Agent</Nav.Link>
           </LinkContainer>
-          <LinkContainer to="/my-agents">
-            <Nav.Link>My Agents</Nav.Link>
+          <LinkContainer to="/myagents">
+            <Nav.Link active={location.pathname === "/myagents"}>
+              My Agents
+            </Nav.Link>
           </LinkContainer>
         </>
       );
