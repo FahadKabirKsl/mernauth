@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Table from "react-bootstrap/Table";
+import { Table, Image } from "react-bootstrap";
 import Loader from "../../Loader";
 import axios from "axios";
 
@@ -41,6 +41,14 @@ const MyAgentScreen = () => {
             {agents.map((agent) => (
               <tr key={agent._id}>
                 <td>{agent._id}</td>
+                <td>
+                  <Image
+                    src={`../../../../../uploads/${agent.agentAvatar}`}
+                    alt={agent.name}
+                    style={{ width: "50px", height: "50px" }}
+                    rounded
+                  />
+                </td>
                 <td>{agent.name}</td>
                 <td>{agent.email}</td>
                 <td>{agent.nid}</td>

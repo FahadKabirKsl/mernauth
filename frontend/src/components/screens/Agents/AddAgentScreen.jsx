@@ -14,25 +14,43 @@ const AddAgentScreen = () => {
   const [nid, setNid] = useState("");
   const [number, setNumber] = useState("");
   const [address, setAddress] = useState("");
-  const [addAgent, { isLoading }] = useAddAgentMutation();
-
+  const [agentAvatar, setAgentAvatar] = useState(null);
+  const [loading, setLoading] = useState(false);
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("nid", nid);
+    formData.append("number", number);
+    formData.append("address", address);
+    if (agentAvatar) {
+      formData.append("agentAvatar", agentAvatar, agentAvatar.name);
+    }
+
     try {
-      const response = await axios.post("api/agents/add-agent", {
-        name,
-        email,
-        nid,
-        number,
-        address,
-      });
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const response = await axios.post(
+        "/api/agents/add-agent",
+        formData,
+        config
+      );
+
       if (response.status === 201) {
         toast.success("Agent added successfully");
+        // Reset the form fields after successful addition
         setName("");
-        setEmail(""), setNid("");
+        setEmail("");
+        setNid("");
         setNumber("");
         setAddress("");
+        setAgentAvatar(null);
       } else {
         const errorMessage = response.data.message;
         toast.error(errorMessage);
@@ -46,70 +64,75 @@ const AddAgentScreen = () => {
     <>
       <>
         <h1>Add agent</h1>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <Form onSubmit={submitHandler}>
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridName">
+        <Form onSubmit={submitHandler}>
+          <Row>
+            <Col md={6}>
+              <Form.Group controlId="name">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
-                  type="name"
+                  type="text"
                   placeholder="Enter name"
-                  required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  required
                 />
               </Form.Group>
-              <Form.Group as={Col} controlId="formGridEmail">
+              <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
                   type="email"
                   placeholder="Enter email"
-                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </Form.Group>
-            </Row>
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridnid">
+              <Form.Group controlId="nid">
                 <Form.Label>NID</Form.Label>
                 <Form.Control
-                  type="number"
-                  placeholder="nid number"
-                  required
+                  type="text"
+                  placeholder="Enter NID"
                   value={nid}
                   onChange={(e) => setNid(e.target.value)}
+                  required
                 />
               </Form.Group>
-              <Form.Group as={Col} controlId="formGridnumber">
-                <Form.Label>number</Form.Label>
+              <Form.Group controlId="number">
+                <Form.Label>Number</Form.Label>
                 <Form.Control
-                  type="number"
-                  placeholder="number"
-                  required
+                  type="text"
+                  placeholder="Enter number"
                   value={number}
                   onChange={(e) => setNumber(e.target.value)}
+                  required
                 />
               </Form.Group>
-            </Row>
-
-            <Form.Group className="mb-3" controlId="formGridAddress1">
-              <Form.Label>Address</Form.Label>
-              <Form.Control
-                placeholder="1234 Main St"
-                required
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        )}
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="avatar">
+                <Form.Label>Avatar (Image)</Form.Label>
+                <Form.Control
+                  type="file"
+                  onChange={(e) => setAgentAvatar(e.target.files[0])}
+                />
+              </Form.Group>
+              <Form.Group controlId="address">
+                <Form.Label>Address</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  placeholder="Enter address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Button type="submit" variant="primary" className="my-3">
+            {loading ? <Loader /> : "Submit"}
+          </Button>
+        </Form>
       </>
     </>
   );
