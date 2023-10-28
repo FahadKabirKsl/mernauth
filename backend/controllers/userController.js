@@ -1,4 +1,6 @@
 import asyncHandler from "express-async-handler";
+import path from "path";
+import fs from "fs";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/userModel.js";
 import AgentCompany from "../models/agentCompanyModels.js";
@@ -100,7 +102,21 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
     user.role = req.body.role || user.role; // If you want to allow updating of the role
+    // avatar
+    if (req.file) {
+      const tempPath = req.file.path;
+      const targetPath = path.join(
+        __dirname,
+        `../uploads/${req.file.originalname}`
+      );
 
+      fs.rename(tempPath, targetPath, (err) => {
+        if (err) throw err;
+        console.log("Upload completed!");
+      });
+
+      user.avatar = `/uploads/${req.file.originalname}`;
+    }
     if (req.body.password) {
       user.password = req.body.password;
     }
@@ -133,6 +149,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       role: updatedUser.role,
+      avatar: updatedUser.avatar,
     });
   } else {
     res.status(404);

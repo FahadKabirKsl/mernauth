@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import asyncHandler from "express-async-handler";
 import { protect } from "../middleware/authMiddleware.js";
 import {
@@ -11,9 +12,9 @@ import {
 } from "../controllers/agentController.js";
 
 const router = express.Router();
-
+const upload = multer({ dest: "uploads/" });
 // Route for adding agents
-router.post("/add-agent", protect, addAgent);
+router.post("/add-agent", protect, upload.single("agentAvatar"), addAgent);
 
 // Route for viewing all agents
 router.get("/list-agents", protect, getAllAgents);

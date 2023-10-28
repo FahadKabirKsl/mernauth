@@ -13,7 +13,7 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("moneyLendingIndividual");
+  const [role, setRole] = useState("agentCompany");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

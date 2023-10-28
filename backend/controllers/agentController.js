@@ -1,12 +1,26 @@
 import asyncHandler from "express-async-handler";
+import path from "path";
+import fs from "fs";
 import User from "../models/userModel.js";
 import Agent from "../models/agentModel.js";
 import AgentCompany from "../models/agentCompanyModels.js"; // Assuming you have an AgentCompany model
 import Banned from "../models/bannedModel.js";
 // Controller function for adding agents
 const addAgent = asyncHandler(async (req, res) => {
-  const { name, email, nid, address, number, agentAvatar } = req.body;
+  const { name, email, nid, address, number } = req.body;
 
+  let agentAvatar;
+  if (req.file) {
+    const tempPath = req.file.path;
+    const targetPath = path.join("uploads", `${req.file.originalname}`);
+
+    fs.rename(tempPath, targetPath, (err) => {
+      if (err) throw err;
+      console.log("Upload completed!");
+    });
+
+    agentAvatar = targetPath;
+  }
   // Check if the requesting user is an agent company
   if (req.user.role !== "agentCompany") {
     res.status(401);
