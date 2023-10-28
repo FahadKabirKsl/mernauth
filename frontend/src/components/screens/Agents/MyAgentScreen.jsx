@@ -43,7 +43,7 @@ const MyAgentScreen = () => {
                 <td>{agent._id}</td>
                 <td>
                   <Image
-                    src={`../../../../../uploads/${agent.agentAvatar}`}
+                    src={`/uploads/${agent.agentAvatar}`}
                     alt={agent.name}
                     style={{ width: "50px", height: "50px" }}
                     rounded
