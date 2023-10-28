@@ -9,18 +9,18 @@ import Banned from "../models/bannedModel.js";
 const addAgent = asyncHandler(async (req, res) => {
   const { name, email, nid, address, number } = req.body;
 
-  let agentAvatar;
-  if (req.file) {
-    const tempPath = req.file.path;
-    const targetPath = path.join("uploads", `${req.file.originalname}`);
+  const agentAvatar = `public/uploads/${req.file.originalname}`;
+  // if (req.file) {
+  //   const tempPath = req.file.path;
+  //   const targetPath = path.join("uploads", `${req.file.originalname}`);
 
-    fs.rename(tempPath, targetPath, (err) => {
-      if (err) throw err;
-      console.log("Upload completed!");
-    });
+  //   fs.rename(tempPath, targetPath, (err) => {
+  //     if (err) throw err;
+  //     console.log("Upload completed!");
+  //   });
 
-    agentAvatar = targetPath;
-  }
+  //   agentAvatar = targetPath;
+  // }
   // Check if the requesting user is an agent company
   if (req.user.role !== "agentCompany") {
     res.status(401);

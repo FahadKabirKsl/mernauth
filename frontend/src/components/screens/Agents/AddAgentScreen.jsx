@@ -11,7 +11,7 @@ import { useAddAgentMutation } from "../../../slices/agentCompanyApiSlice";
 const AddAgentScreen = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [nid, setNid] = useState("");
+  const [nid, setNid] = useState(0);
   const [number, setNumber] = useState("");
   const [address, setAddress] = useState("");
   const [agentAvatar, setAgentAvatar] = useState(null);
@@ -90,7 +90,7 @@ const AddAgentScreen = () => {
               <Form.Group controlId="nid">
                 <Form.Label>NID</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="number"
                   placeholder="Enter NID"
                   value={nid}
                   onChange={(e) => setNid(e.target.value)}
@@ -109,7 +109,7 @@ const AddAgentScreen = () => {
               </Form.Group>
             </Col>
             <Col md={6}>
-              <Form.Group controlId="avatar">
+              <Form.Group controlId="agentAvatar">
                 <Form.Label>Avatar (Image)</Form.Label>
                 <Form.Control
                   type="file"
