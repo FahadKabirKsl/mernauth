@@ -44,8 +44,7 @@ const agentSchema = mongoose.Schema({
     // required: true,
   },
   agentAvatar: {
-    type: String, // You may want to store a path to the image or use a specific data type based on your application requirements
-    // required: true,
+    type: String,
   },
   isGood: {
     type: Boolean,
