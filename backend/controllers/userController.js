@@ -1,14 +1,9 @@
 import asyncHandler from "express-async-handler";
-import path from "path";
-import fs from "fs";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/userModel.js";
 import AgentCompany from "../models/agentCompanyModels.js";
 import Banned from "../models/bannedModel.js";
 
-// @desc Auth user/set token
-// route POST /api/users/auth
-// access Public
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -25,10 +20,6 @@ const authUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid email or password");
   }
 });
-
-// @desc register new user
-// route POST /api/users
-// access Public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, role } = req.body;
 
@@ -71,18 +62,10 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid user data");
   }
 });
-
-// @desc logout
-// route POST /api/users/logout
-// access Public
 const logoutUser = asyncHandler(async (req, res) => {
   res.clearCookie("jwt");
   res.status(200).json({ message: "User logged out" });
 });
-
-// @desc get user profile
-// route GET /api/users/profile
-// access Private
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = {
     _id: req.user._id,
@@ -92,10 +75,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
   };
   res.status(200).json(user);
 });
-
-// @desc update user profile
-// route PUT /api/users/profile
-// access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   if (user) {
@@ -103,20 +82,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.email = req.body.email || user.email;
     user.role = req.body.role || user.role; // If you want to allow updating of the role
     // avatar
-    if (req.file) {
-      const tempPath = req.file.path;
-      const targetPath = path.join(
-        __dirname,
-        `../uploads/${req.file.originalname}`
-      );
-
-      fs.rename(tempPath, targetPath, (err) => {
-        if (err) throw err;
-        console.log("Upload completed!");
-      });
-
-      user.avatar = `/uploads/${req.file.originalname}`;
-    }
+    const avatar = `public/uploads/${req.file.originalname}`;
     if (req.body.password) {
       user.password = req.body.password;
     }
@@ -141,9 +107,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         await agentCompany.save();
       }
     }
-
     const updatedUser = await user.save();
-
     res.status(200).json({
       _id: updatedUser._id,
       name: updatedUser.name,
@@ -156,7 +120,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
-
 export {
   authUser,
   registerUser,

@@ -8,8 +8,9 @@ import {
   getUserProfile,
   updateUserProfile,
 } from "../controllers/userController.js";
+import upload from "../middleware/uploadMiddleware.js";
 import { protect } from "../middleware/authMiddleware.js";
-const upload = multer({ dest: "uploads/" });
+// const upload = multer({ dest: "uploads/" });
 router.post("/", registerUser);
 router.post("/auth", authUser);
 router.post("/logout", logoutUser);
