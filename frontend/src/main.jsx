@@ -18,6 +18,10 @@ import ProfileScreen from "./components/screens/ProfileScreen";
 import PrivateRoute from "./components/PrivateRoute";
 import AddAgentScreen from "./components/screens/Agents/AddAgentScreen";
 import MyAgentScreen from "./components/screens/Agents/MyAgentScreen";
+import ReportAgentCompanyScreen from "./components/screens/MoneyLending/ReportAgentCompanyScreen";
+import ReportAgentScreen from "./components/screens/MoneyLending/ReportAgentScreen";
+import AgentCompanyListScreen from "./components/screens/MoneyLending/AgentCompanyListScreen";
+import AgentListScreen from "./components/screens/MoneyLending/AgentListScreen";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +34,10 @@ const router = createBrowserRouter(
         <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/add-agent" element={<AddAgentScreen />} />
         <Route path="/myagents" element={<MyAgentScreen />} />
+        <Route path="/list-agents" element={<ReportAgentScreen/>} />
+        <Route path="/agentCompanies" element={<ReportAgentCompanyScreen />} />
+        <Route path="/reportAgent/:id" element={<AgentListScreen />} />
+        <Route path="/reportAgentCompany/:id" element={<AgentCompanyListScreen />} />
       </Route>
     </Route>
   )

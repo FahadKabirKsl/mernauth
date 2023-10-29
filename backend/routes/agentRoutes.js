@@ -17,11 +17,11 @@ const router = express.Router();
 // Route for adding agents
 router.post("/add-agent", protect, upload.single("agentAvatar"), addAgent);
 
-// Route for viewing all agents
-router.get("/list-agents", protect, getAllAgents);
+
 // Route for viewing agents for the current agent company
 router.get("/myagents", protect, getAgentsForCompany);
-
+// Route for viewing all agents
+router.get("/list-agents", protect, getAllAgents);
 // Route for viewing all agent companies
 router.get("/agentCompanies", protect, getAllAgentCompanies);
 
@@ -32,3 +32,5 @@ router.put("/reportAgent/:id", protect, reportAgent);
 router.put("/reportAgentCompany/:id", protect, reportAgentCompany);
 
 export default router;
+
+
