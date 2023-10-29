@@ -87,7 +87,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       user.password = req.body.password;
     }
     if (req.file) {
-      user.avatar = `public/uploads/${req.file.originalname}`;
+      user.avatar = `/uploads/${req.file.originalname}`;
     }
 
     const updatedUser = await user.save();

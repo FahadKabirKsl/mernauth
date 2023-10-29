@@ -5,7 +5,7 @@ import Banned from "../models/bannedModel.js";
 // Controller function for adding agents
 const addAgent = asyncHandler(async (req, res) => {
   const { name, email, nid, address, number } = req.body;
-  const agentAvatar = `public/uploads/${req.file.originalname}`;
+  const agentAvatar = `/uploads/${req.file.originalname}`;
   if (req.user.role !== "agentCompany") {
     res.status(401);
     throw new Error("Not authorized to add agents");
