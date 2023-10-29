@@ -13,7 +13,6 @@ const getAllAgents = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
-
 // Controller function to get all agent companies
 const getAllAgentCompanies = asyncHandler(async (req, res) => {
   try {
@@ -23,7 +22,6 @@ const getAllAgentCompanies = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
-
 // Controller function to ban an agent
 const banAgent = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -77,7 +75,4 @@ const banAgentCompany = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
-
-
-
 export { getAllAgents, getAllAgentCompanies, banAgent, banAgentCompany };
