@@ -60,6 +60,7 @@ const AgentCompanyListScreen = () => {
                 <th>ID</th>
                 <th>Company Name</th>
                 <th>Email</th>
+                <th>Report status</th>
                 <th>Number</th>
                 <th>Address</th>
               </tr>
@@ -71,11 +72,12 @@ const AgentCompanyListScreen = () => {
                   onClick={() => handleCompanySelection(company)}
                   style={{ cursor: "pointer" }}
                 >
-                  <td>{company._id}</td>
-                  <td>{company.name}</td>
-                  <td>{company.email}</td>
-                  <td>{company.number}</td>
-                  <td>{company.address}</td>
+                  <td>{company._id || "No ID provided"}</td>
+                  <td>{company.name || "No Company Name provided"}</td>
+                  <td>{company.email || "No Email provided"}</td>
+                  <td>{company.isGood ? "Safe" : "Fraud"}</td>
+                  <td>{company.number || "No Number provided"}</td>
+                  <td>{company.address || "No Address provided"}</td>
                 </tr>
               ))}
             </tbody>
@@ -84,8 +86,18 @@ const AgentCompanyListScreen = () => {
           <div>No Agent company found</div>
         )}
       </div>
-      {selectedCompany && (
-        <ReportAgentCompanyScreen selectedCompany={selectedCompany} />
+      {selectedCompany ? (
+        <ReportAgentCompanyScreen
+          selectedCompany={selectedCompany}
+          companyID={selectedCompany._id || "No ID provided"}
+          companyName={selectedCompany.name || "No Company Name provided"}
+          companyEmail={selectedCompany.email || "No Email provided"}
+          companyisGood={selectedCompany.isGood ? "Safe" : "Fraud"}
+          companyNumber={selectedCompany.number || "No Number provided"}
+          companyAddress={selectedCompany.address || "No Address provided"}
+        />
+      ) : (
+        <div>No company selected</div>
       )}
     </>
   );

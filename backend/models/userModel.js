@@ -30,6 +30,14 @@ const userSchema = mongoose.Schema(
     avatar: {
       type: String,
     },
+    isGood: {
+      type: Boolean,
+      default: true,
+    },
+    isBanned: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
