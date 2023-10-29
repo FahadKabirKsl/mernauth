@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import CustomTabs from "./screens/MoneyLending/CustomTabs";
 import AgentListScreen from "./screens/MoneyLending/AgentListScreen";
 import AgentCompanyListScreen from "./screens/MoneyLending/AgentCompanyListScreen";
-
+import ReportAgentCompanyScreen from "./screens/MoneyLending/ReportAgentCompanyScreen";
+import ReportAgentScreen from "./screens/MoneyLending/ReportAgentScreen";
 
 const Hero = () => {
   const user = useSelector((state) => state.auth.userInfo);
@@ -32,18 +33,17 @@ const Hero = () => {
           <div>
             {/* <AgentCompanyListScreen />
             <AgentListScreen /> */}
-            <CustomTabs tabs={[
+            <CustomTabs
+              tabs={[
                 { title: "Agent List", content: <AgentListScreen /> },
-                { title: "Agent Company List", content: <AgentCompanyListScreen /> },
-              ]} />
+                {
+                  title: "Agent Company List",
+                  content: <AgentCompanyListScreen />,
+                },
+              ]}
+            />
           </div>
-          <h2>Report</h2>
-
-          <div>
-            <CustomTabs />
-            {/* <ReportAgentCompanyScreen />
-            <ReportAgentScreen /> */}
-          </div>
+          
         </>
       )}
     </>

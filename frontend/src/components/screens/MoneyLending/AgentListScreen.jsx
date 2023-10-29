@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import ReportAgentScreen from "./ReportAgentScreen";
 const AgentListScreen = () => {
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedAgent, setSelectedAgent] = useState(null);
 
   useEffect(() => {
     const fetchAgents = async () => {
@@ -36,6 +38,11 @@ const AgentListScreen = () => {
       number.includes(searchTerm.toLowerCase())
     );
   });
+  const handleAgentSelection = (agent) => {
+    setSelectedAgent(agent);
+    // Handle the selected agent, for example:
+    console.log("Selected agent data:", agent);
+  };
 
   return (
     <>
@@ -63,7 +70,8 @@ const AgentListScreen = () => {
               </thead>
               <tbody>
                 {filteredAgents.map((agent) => (
-                  <tr key={agent._id}>
+                  <tr key={agent._id} onClick={() => handleAgentSelection(agent)}
+                  style={{ cursor: "pointer" }}>
                     <td>{agent._id}</td>
                     <td>{agent.name}</td>
                     <td>{agent.email}</td>
@@ -78,6 +86,9 @@ const AgentListScreen = () => {
           )}
         </div>
       </div>
+      {selectedAgent && (
+        <ReportAgentScreen selectedAgent={selectedAgent} />
+      )}
     </>
   );
 };
