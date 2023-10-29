@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../FormContainer";
 import { toast } from "react-toastify";
@@ -14,11 +14,11 @@ const ProfileScreen = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const [updateProfile, { isLoading }] = useUpdateUserMutation();
-  // const { userInfo } = useSelector((state) => state.auth);
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const [modalShow, setModalShow] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [updateProfile, { isLoading }] = useUpdateUserMutation();
+  const { userInfo } = useSelector((state) => state.auth);
   useEffect(() => {
     setName(userInfo.name);
     setEmail(userInfo.email);
@@ -44,49 +44,38 @@ const ProfileScreen = () => {
   //     }
   //   }
   // };
-  useEffect(() => {
-    setName(userInfo.name);
-    setEmail(userInfo.email);
-  }, [userInfo.email, userInfo.name]);
-
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
     } else {
       try {
-        const formData = new FormData();
-        formData.append("name", name);
-        formData.append("email", email);
-        formData.append("password", password);
-        formData.append("avatar", avatar);
-
-        const config = {
-          headers: {
-            "content-type": "multipart/form-data",
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        };
-
-        const { data } = await axios.put(
-          "/api/users/profile",
-          formData,
-          config
-        );
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        toast.success("Profile updated successfully");
+        // Display modal for password confirmation
+        setModalShow(true);
       } catch (err) {
-        toast.error(
-          err.response && err.response.data.message
-            ? err.response.data.message
-            : err.message
-        );
+        toast.error(err?.data?.message || err.error);
       }
     }
   };
+  const confirmUpdate = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("avatar", avatar);
 
-  const onFileChange = (e) => {
-    setAvatar(e.target.files[0]);
+      const res = await axios.put("/api/users/profile", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      dispatch(setCredentials({ ...res.data }));
+      toast.success("Profile updated successfully");
+      setModalShow(false);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
   };
   return (
     <FormContainer>
@@ -165,9 +154,9 @@ const ProfileScreen = () => {
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Form.Group className="my-2" controlId="avatar">
-          <Form.Label>Avatar (Image)</Form.Label>
-          <Form.Control type="file" onChange={onFileChange} />
+        <Form.Group className="my-2" controlId="role">
+          <Form.Label>Role</Form.Label>
+          <Form.Control plaintext readOnly defaultValue={userInfo.role} />
         </Form.Group>
         <Form.Group className="my-2" controlId="password">
           <Form.Label>Password</Form.Label>
@@ -179,6 +168,14 @@ const ProfileScreen = () => {
           ></Form.Control>
         </Form.Group>
 
+        <Form.Group className="my-2" controlId="avatar">
+          <Form.Label>Avatar (Image)</Form.Label>
+          <Form.Control
+            type="file"
+            onChange={(e) => setAvatar(e.target.files[0])}
+          />
+        </Form.Group>
+
         <Form.Group className="my-2" controlId="confirmPassword">
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
@@ -188,10 +185,36 @@ const ProfileScreen = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
+        {isLoading && <Loader />}
         <Button type="submit" variant="primary" className="mt-3">
           Update
         </Button>
       </Form>
+      {/* Modal for password confirmation */}
+      <Modal show={modalShow} onHide={() => setModalShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Password Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label>Please enter your password for confirmation</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setModalShow(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={confirmUpdate}>
+            Confirm Update
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </FormContainer>
   );
 };

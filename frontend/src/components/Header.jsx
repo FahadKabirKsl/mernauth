@@ -1,4 +1,11 @@
-import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
+import {
+  Navbar,
+  Nav,
+  Container,
+  NavDropdown,
+  Badge,
+  Image,
+} from "react-bootstrap";
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { FaPersonShelter, FaPersonBreastfeeding } from "react-icons/fa6";
 import { LinkContainer } from "react-router-bootstrap";
@@ -98,7 +105,25 @@ const Header = () => {
                   {renderMoneyLendingLinks()}
                   <NavDropdown
                     // title={userInfo.name}
-                    title={`${userInfo.name} - ${userInfo.role}`}
+                    // title={`${userInfo.name} - ${userInfo.role}`}
+                    title={
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        {userInfo.avatar ? (
+                          <Image
+                            src={userInfo.avatar}
+                            rounded
+                            style={{
+                              width: "30px",
+                              height: "30px",
+                              marginRight: "5px",
+                            }}
+                          />
+                        ) : (
+                          <FaPersonShelter style={{ marginRight: "5px" }} />
+                        )}
+                        {`${userInfo.name} - ${userInfo.role}`}
+                      </div>
+                    }
                     id="username"
                   >
                     <LinkContainer to="/profile">

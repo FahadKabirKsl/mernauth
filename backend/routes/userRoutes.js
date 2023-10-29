@@ -1,6 +1,7 @@
 import express from "express";
-import multer from "multer";
 const router = express.Router();
+import upload from "../middleware/uploadMiddleware.js";
+import { protect } from "../middleware/authMiddleware.js";
 import {
   authUser,
   registerUser,
@@ -8,9 +9,6 @@ import {
   getUserProfile,
   updateUserProfile,
 } from "../controllers/userController.js";
-import upload from "../middleware/uploadMiddleware.js";
-import { protect } from "../middleware/authMiddleware.js";
-// const upload = multer({ dest: "uploads/" });
 router.post("/", registerUser);
 router.post("/auth", authUser);
 router.post("/logout", logoutUser);
