@@ -4,24 +4,7 @@ import User from "../models/userModel.js";
 import Agent from "../models/agentModel.js";
 import AgentCompany from "../models/agentCompanyModels.js";
 import Banned from "../models/bannedModel.js";
-// Controller function to get all agents
-const getAllAgents = asyncHandler(async (req, res) => {
-  try {
-    const agents = await Agent.find({});
-    res.json(agents);
-  } catch (error) {
-    res.status(500).json({ message: "Server Error" });
-  }
-});
-// Controller function to get all agent companies
-const getAllAgentCompanies = asyncHandler(async (req, res) => {
-  try {
-    const agentCompanies = await AgentCompany.find({});
-    res.json(agentCompanies);
-  } catch (error) {
-    res.status(500).json({ message: "Server Error" });
-  }
-});
+
 // Controller function to ban an agent
 const banAgent = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -74,5 +57,54 @@ const banAgentCompany = asyncHandler(async (req, res) => {
     console.error("Error banning agent company:", error);
     res.status(500).json({ message: "Server Error" });
   }
+}); // Controller function to get all agents
+const getAllAgents = asyncHandler(async (req, res) => {
+  try {
+    const agents = await Agent.find({});
+    res.json(agents);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
 });
-export { getAllAgents, getAllAgentCompanies, banAgent, banAgentCompany };
+// Controller function to get all agent companies
+const getAllAgentCompanies = asyncHandler(async (req, res) => {
+  try {
+    const agentCompanies = await AgentCompany.find({});
+    res.json(agentCompanies);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+// Controller function to get all money lending entities
+const getAllMoneyLendingEntities = asyncHandler(async (req, res) => {
+  try {
+    const companies = await User.find({ role: "moneyLendingCompany" });
+    const individuals = await User.find({ role: "moneyLendingIndividual" });
+
+    const allMoneyLendingEntities = {
+      companies: companies,
+      individuals: individuals,
+    };
+
+    res.json(allMoneyLendingEntities);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+// Controller function to get all banned agents and agent companies
+const getAllBanned = asyncHandler(async (req, res) => {
+  try {
+    const bannedEntities = await Banned.find({});
+    res.json(bannedEntities);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+export {
+  getAllAgents,
+  getAllAgentCompanies,
+  banAgent,
+  banAgentCompany,
+  getAllMoneyLendingEntities,
+  getAllBanned,
+};
