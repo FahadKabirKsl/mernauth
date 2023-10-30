@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ReportAgentScreen from "./ReportAgentScreen";
+import { Image } from "react-bootstrap";
 const AgentListScreen = () => {
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -64,6 +65,7 @@ const AgentListScreen = () => {
                   <th>ID</th>
                   <th>Agent Name</th>
                   <th>Email</th>
+                  <th>Image</th>
                   <th>Report status</th>
                   <th>NID</th>
                   <th>Number</th>
@@ -79,6 +81,14 @@ const AgentListScreen = () => {
                     <td>{agent._id || "No ID provided"}</td>
                     <td>{agent.name || "No Name provided"}</td>
                     <td>{agent.email || "No Email provided"}</td>
+                    <td>
+                      <Image
+                        src={agent.agentAvatar || "No Image provided"}
+                        alt={agent.name}
+                        style={{ width: "50px", height: "50px" }}
+                        rounded
+                      />
+                    </td>
                     <td>{agent.isGood ? "Safe" : "Fraud"}</td>
                     <td>{agent.nid || "No NID provided"}</td>
                     <td>{agent.number || "No Number provided"}</td>

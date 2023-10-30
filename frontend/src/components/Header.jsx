@@ -76,14 +76,14 @@ const Header = () => {
       return (
         <>
           <LinkContainer to="/agent-list">
-            <Nav.Link>Agent / Agent Company List</Nav.Link>
+            <Nav.Link>Subscripton</Nav.Link>
           </LinkContainer>
-          <LinkContainer to="/report-agent">
+          {/* <LinkContainer to="/report-agent">
             <Nav.Link>Report Agent</Nav.Link>
           </LinkContainer>
           <LinkContainer to="/report-agent-company">
             <Nav.Link>Report Agent Company</Nav.Link>
-          </LinkContainer>
+          </LinkContainer> */}
         </>
       );
     }
