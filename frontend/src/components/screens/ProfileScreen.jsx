@@ -11,6 +11,8 @@ import axios from "axios";
 const ProfileScreen = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
+  const [cid, setCid] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
@@ -24,26 +26,7 @@ const ProfileScreen = () => {
     setEmail(userInfo.email);
   }, [userInfo.email, userInfo.name]);
 
-  // const submitHandler = async (e) => {
-  //   e.preventDefault();
-  //   if (password !== confirmPassword) {
-  //     toast.error("Passwords do not match");
-  //   } else {
-  //     try {
-  //       const res = await updateProfile({
-  //         _id: userInfo._id,
-  //         name,
-  //         email,
-  //         password,
-  //         avatar,
-  //       }).unwrap();
-  //       dispatch(setCredentials({ ...res }));
-  //       toast.success("Profile updated successfully");
-  //     } catch (err) {
-  //       toast.error(err?.data?.message || err.error);
-  //     }
-  //   }
-  // };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -62,6 +45,8 @@ const ProfileScreen = () => {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("email", email);
+      formData.append("number", number);
+      formData.append("cid", cid);
       formData.append("password", password);
       formData.append("avatar", avatar);
 
@@ -154,9 +139,35 @@ const ProfileScreen = () => {
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
+        <Form.Group className="my-2" controlId="number">
+          <Form.Label>Number</Form.Label>
+          <Form.Control
+            type="number"
+            placeholder="Enter number"
+            value={number}
+            onChange={(e) => setNumber(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+        <Form.Group className="my-2" controlId="cid">
+          <Form.Label>Company ID</Form.Label>
+          <Form.Control
+            type="cid"
+            placeholder="Enter cid"
+            value={cid}
+            onChange={(e) => setCid(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
         <Form.Group className="my-2" controlId="role">
           <Form.Label>Role</Form.Label>
           <Form.Control plaintext readOnly defaultValue={userInfo.role} />
+        </Form.Group>
+
+        <Form.Group className="my-2" controlId="avatar">
+          <Form.Label>Avatar (Image)</Form.Label>
+          <Form.Control
+            type="file"
+            onChange={(e) => setAvatar(e.target.files[0])}
+          />
         </Form.Group>
         <Form.Group className="my-2" controlId="password">
           <Form.Label>Password</Form.Label>
@@ -167,15 +178,6 @@ const ProfileScreen = () => {
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-
-        <Form.Group className="my-2" controlId="avatar">
-          <Form.Label>Avatar (Image)</Form.Label>
-          <Form.Control
-            type="file"
-            onChange={(e) => setAvatar(e.target.files[0])}
-          />
-        </Form.Group>
-
         <Form.Group className="my-2" controlId="confirmPassword">
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control

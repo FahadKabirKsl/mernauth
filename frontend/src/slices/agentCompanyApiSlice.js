@@ -1,7 +1,4 @@
-
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
 export const agentCompanyApi = createApi({
   reducerPath: "agentCompanyApi",
   baseQuery: fetchBaseQuery({ baseUrl: "/api/agents" }),

@@ -83,6 +83,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
     user.role = req.body.role || user.role;
+    user.number = req.body.number || user.number;
+    user.cid = req.body.cid || user.cid;
     if (req.body.password) {
       user.password = req.body.password;
     }
@@ -97,6 +99,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       role: updatedUser.role,
+      number: updatedUser.number,
+      cid: updatedUser.cid,
       avatar: updatedUser.avatar,
     });
   } else {
@@ -109,5 +113,5 @@ export {
   registerUser,
   logoutUser,
   getUserProfile,
-  updateUserProfile
+  updateUserProfile,
 };

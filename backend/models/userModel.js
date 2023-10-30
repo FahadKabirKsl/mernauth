@@ -27,6 +27,21 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    number: {
+      type: Number,
+      required: false, // Make it optional for the agent company
+      unique: true,
+    },
+    nid: {
+      type: Number,
+      required: false, // Make it optional for the agent company
+      unique: true,
+    },
+    cid: {
+      type: Number,
+      required: false, // Make it optional for the agent company
+      unique: true,
+    },
     avatar: {
       type: String,
     },

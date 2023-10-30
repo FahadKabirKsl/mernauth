@@ -5,8 +5,11 @@ import { useSelector } from "react-redux";
 import CustomTabs from "./screens/MoneyLending/CustomTabs";
 import AgentListScreen from "./screens/MoneyLending/AgentListScreen";
 import AgentCompanyListScreen from "./screens/MoneyLending/AgentCompanyListScreen";
-import ReportAgentCompanyScreen from "./screens/MoneyLending/ReportAgentCompanyScreen";
-import ReportAgentScreen from "./screens/MoneyLending/ReportAgentScreen";
+import AllAgentCompaniesScreen from "./screens/Admin/AllAgentCompaniesScreen";
+import AllAgentsScreen from "./screens/Admin/AllAgentsScreen";
+import AllMoneyLendingEntitiesScreen from "./screens/Admin/AllMoneyLendingEntitiesScreen ";
+import BannedAgentCompanyScreen from "./screens/Admin/BannedAgentCompanyScreen";
+import BannedAgentScreen from "./screens/Admin/BannedAgentScreen";
 
 const Hero = () => {
   const user = useSelector((state) => state.auth.userInfo);
@@ -15,6 +18,11 @@ const Hero = () => {
     <>
       {userRole === "admin" && (
         <>
+          <AllAgentCompaniesScreen />
+          <AllAgentsScreen />
+          <AllMoneyLendingEntitiesScreen />
+          <BannedAgentCompanyScreen />
+          <BannedAgentScreen />
           {/* Show all agent table */}
           {/* Show all agent company table */}
           {/* Show banned agent or company form */}
@@ -43,7 +51,6 @@ const Hero = () => {
               ]}
             />
           </div>
-          
         </>
       )}
     </>
