@@ -64,19 +64,24 @@ const AgentListScreen = () => {
                   <th>ID</th>
                   <th>Agent Name</th>
                   <th>Email</th>
+                  <th>Report status</th>
                   <th>NID</th>
                   <th>Number</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredAgents.map((agent) => (
-                  <tr key={agent._id} onClick={() => handleAgentSelection(agent)}
-                  style={{ cursor: "pointer" }}>
-                    <td>{agent._id}</td>
-                    <td>{agent.name}</td>
-                    <td>{agent.email}</td>
-                    <td>{agent.nid}</td>
-                    <td>{agent.number}</td>
+                  <tr
+                    key={agent._id}
+                    onClick={() => handleAgentSelection(agent)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <td>{agent._id || "No ID provided"}</td>
+                    <td>{agent.name || "No Name provided"}</td>
+                    <td>{agent.email || "No Email provided"}</td>
+                    <td>{agent.isGood ? "Safe" : "Fraud"}</td>
+                    <td>{agent.nid || "No NID provided"}</td>
+                    <td>{agent.number || "No Number provided"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -86,8 +91,18 @@ const AgentListScreen = () => {
           )}
         </div>
       </div>
-      {selectedAgent && (
-        <ReportAgentScreen selectedAgent={selectedAgent} />
+      {selectedAgent ? (
+        <ReportAgentScreen
+          selectedAgent={selectedAgent}
+          agentID={selectedAgent._id || "No ID provided"}
+          agentName={selectedAgent.name || "No Name provided"}
+          agentEmail={selectedAgent.email || "No Email provided"}
+          agentisGood={selectedAgent.isGood ? "Safe" : "Fraud"}
+          agentNumber={selectedAgent.number || "No Number provided"}
+          agentAddress={selectedAgent.address || "No Address provided"}
+        />
+      ) : (
+        <div>No Agents selected</div>
       )}
     </>
   );

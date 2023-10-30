@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Form, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import Loader from "../../Loader";
+
 const ReportAgentCompanyScreen = ({
   selectedCompany,
   companyID,
@@ -14,11 +15,6 @@ const ReportAgentCompanyScreen = ({
   const [incident, setIncident] = useState("");
   const [isGood, setIsGood] = useState(selectedCompany.isGood);
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    if (!isGood) {
-      toast.error(`${selectedCompany.name} is a fraud company`, { type: "error" });
-    }
-  }, [isGood, selectedCompany.name]);
 
   const handleReportSubmission = async () => {
     try {
@@ -37,13 +33,13 @@ const ReportAgentCompanyScreen = ({
 
       if (response.status === 200) {
         toast.success("Agent company reported successfully");
+        // Reload the page here
+        window.location.reload();
       }
     } catch (error) {
       toast.error("Failed to report agent company");
-    }finally {
+    } finally {
       setIsLoading(false);
-      // Reload the page here
-      window.location.reload();
     }
   };
 
@@ -53,7 +49,9 @@ const ReportAgentCompanyScreen = ({
 
   const handleCheckboxChange = () => {
     if (!selectedCompany.isGood) {
-      setIsGood(false);
+      toast.error(`${selectedCompany.name} is a fraud company`, {
+        type: "error",
+      });
     } else {
       setIsGood(!isGood);
     }
@@ -120,7 +118,12 @@ const ReportAgentCompanyScreen = ({
           <div>
             <Form.Group controlId="incident">
               <Form.Label>Incident Description</Form.Label>
-              <Form.Control as="textarea" rows={3} value={selectedCompany.incident} readOnly />
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={selectedCompany.incident}
+                readOnly
+              />
             </Form.Group>
             <p>{`${selectedCompany.name} is a fraud company`}</p>
           </div>
