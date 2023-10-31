@@ -33,11 +33,6 @@ const userSchema = mongoose.Schema(
       unique: true,
       sparse: true,
     },
-    // nid: {
-    //   type: Number,
-    //   required: false,
-    //   unique: true,
-    // },
     cid: {
       type: Number,
       required: false,

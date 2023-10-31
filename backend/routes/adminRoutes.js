@@ -8,7 +8,7 @@ import {
   banAgentCompany,
   getAllMoneyLendingEntities,
   getAllBanned,
-} from "../controllers/adminController.js"; // Assuming you have an adminController with the necessary functions
+} from "../controllers/adminController.js";
 
 // Admin routes
 router.get("/agents", protect, checkUserRole(["admin"]), getAllAgents);
@@ -25,7 +25,6 @@ router.put(
   checkUserRole(["admin"]),
   banAgentCompany
 );
-// New routes for money lending entities and banned entities
 router.get(
   "/moneyLendingEntities",
   protect,

@@ -1,6 +1,4 @@
-// AgentCompany Model (agentCompanyModel.js)
 import mongoose from "mongoose";
-
 const agentCompanySchema = new mongoose.Schema({
   name: {
     type: String,

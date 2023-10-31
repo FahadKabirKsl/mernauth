@@ -1,10 +1,8 @@
 import multer from "multer";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "../../frontend/public/uploads/"));
@@ -14,6 +12,5 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-
 const upload = multer({ storage });
 export default upload

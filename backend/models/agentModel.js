@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 const agentSchema = mongoose.Schema({
   name: {
     type: String,
