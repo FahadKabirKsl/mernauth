@@ -10,6 +10,7 @@ import AllAgentsScreen from "./screens/Admin/AllAgentsScreen";
 import AllMoneyLendingEntitiesScreen from "./screens/Admin/AllMoneyLendingEntitiesScreen ";
 import BannedAgentCompanyScreen from "./screens/Admin/BannedAgentCompanyScreen";
 import BannedAgentScreen from "./screens/Admin/BannedAgentScreen";
+import AllBannedEntitiesScreen from "./screens/Admin/AllBannedEntitiesScreen";
 
 const Hero = () => {
   const user = useSelector((state) => state.auth.userInfo);
@@ -23,6 +24,7 @@ const Hero = () => {
           <AllMoneyLendingEntitiesScreen />
           <BannedAgentCompanyScreen />
           <BannedAgentScreen />
+          <AllBannedEntitiesScreen />
           {/* Show all agent table */}
           {/* Show all agent company table */}
           {/* Show banned agent or company form */}
