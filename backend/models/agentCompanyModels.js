@@ -27,17 +27,17 @@ const agentCompanySchema = new mongoose.Schema({
   },
   number: {
     type: Number,
-    required: false, // Make it optional for the agent company
+    required: false, 
     unique: true,
   },
   
   cid: {
     type: Number,
-    required: false, // Make it optional for the agent company
+    required: false, 
     unique: true,
   },
   avatar: {
-    type: String, // You may want to store a path to the image or use a specific data type based on your application requirements
+    type: String, 
   },
   incident: {
     type: String,

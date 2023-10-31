@@ -76,6 +76,38 @@ const getUserProfile = asyncHandler(async (req, res) => {
   res.status(200).json(user);
 });
 
+// const updateUserProfile = asyncHandler(async (req, res) => {
+//   const user = await User.findById(req.user._id);
+
+//   if (user) {
+//     user.name = req.body.name || user.name;
+//     user.email = req.body.email || user.email;
+//     user.role = req.body.role || user.role;
+//     user.number = req.body.number || user.number;
+//     user.cid = req.body.cid || user.cid;
+//     if (req.body.password) {
+//       user.password = req.body.password;
+//     }
+//     if (req.file) {
+//       user.avatar = `/uploads/${req.file.originalname}`;
+//     }
+
+//     const updatedUser = await user.save();
+
+//     res.json({
+//       _id: updatedUser._id,
+//       name: updatedUser.name,
+//       email: updatedUser.email,
+//       role: updatedUser.role,
+//       number: updatedUser.number,
+//       cid: updatedUser.cid,
+//       avatar: updatedUser.avatar,
+//     });
+//   } else {
+//     res.status(404);
+//     throw new Error("User not found");
+//   }
+// });
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
@@ -94,6 +126,19 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
     const updatedUser = await user.save();
 
+    if (user.role === "agentCompany") {
+      const agentCompany = await AgentCompany.findOne({ email: user.email });
+      if (agentCompany) {
+        agentCompany.name = user.name;
+        agentCompany.email = user.email;
+        agentCompany.number = user.number;
+        agentCompany.cid = user.cid;
+        agentCompany.avatar = user.avatar;
+
+        await agentCompany.save();
+      }
+    }
+
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
@@ -108,6 +153,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
+
 export {
   authUser,
   registerUser,
