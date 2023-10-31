@@ -110,6 +110,38 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // });
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
+  // Extracting email, number, and cid from the request body
+  const { email, number, cid } = req.body;
+
+  // Checking if the email, number, and cid already exist for other users
+  const userWithSameEmail = await User.findOne({ email });
+  const userWithSameNumber = await User.findOne({ number });
+  const userWithSameCid = await User.findOne({ cid });
+
+  // If a user with the same email, number, or cid is found and it's not the current user, throw an error
+  if (
+    userWithSameEmail &&
+    userWithSameEmail._id.toString() !== user._id.toString()
+  ) {
+    res.status(400);
+    throw new Error("Email is already in use");
+  }
+
+  if (
+    userWithSameNumber &&
+    userWithSameNumber._id.toString() !== user._id.toString()
+  ) {
+    res.status(400);
+    throw new Error("Number is already in use");
+  }
+
+  if (
+    userWithSameCid &&
+    userWithSameCid._id.toString() !== user._id.toString()
+  ) {
+    res.status(400);
+    throw new Error("CID is already in use");
+  }
 
   if (user) {
     user.name = req.body.name || user.name;
