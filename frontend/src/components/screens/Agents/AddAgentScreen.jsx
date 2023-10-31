@@ -12,7 +12,7 @@ const AddAgentScreen = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [nid, setNid] = useState(0);
-  const [number, setNumber] = useState("");
+  const [number, setNumber] = useState(0);
   const [address, setAddress] = useState("");
   const [agentAvatar, setAgentAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -47,8 +47,8 @@ const AddAgentScreen = () => {
         // Reset the form fields after successful addition
         setName("");
         setEmail("");
-        setNid("");
-        setNumber("");
+        setNid(0);
+        setNumber(0);
         setAddress("");
         setAgentAvatar(null);
       } else {
@@ -114,6 +114,7 @@ const AddAgentScreen = () => {
                 <Form.Control
                   type="file"
                   onChange={(e) => setAgentAvatar(e.target.files[0])}
+                  required
                 />
               </Form.Group>
               <Form.Group controlId="address">
@@ -139,4 +140,3 @@ const AddAgentScreen = () => {
 };
 
 export default AddAgentScreen;
-

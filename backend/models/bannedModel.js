@@ -10,16 +10,19 @@ const bannedSchema = mongoose.Schema({
     type: Number,
     required: false, // Make it optional for the agent company
     unique: true,
+    sparse: true,
   },
   nid: {
     type: Number,
     required: false, // Make it optional for the agent company
     unique: true,
+    sparse: true,
   },
   cid: {
     type: Number,
     required: false, // Make it optional for the agent company
     unique: true,
+    sparse: true,
   },
   isAgent: {
     type: Boolean,

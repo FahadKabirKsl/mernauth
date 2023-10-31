@@ -11,8 +11,8 @@ import axios from "axios";
 const ProfileScreen = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
-  const [cid, setCid] = useState("");
+  const [number, setNumber] = useState(0);
+  const [cid, setCid] = useState(0);
   const [password, setPassword] = useState("");
   const [modalPassword, setModalPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -80,6 +80,7 @@ const ProfileScreen = () => {
             placeholder="Enter name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           ></Form.Control>
         </Form.Group>
         <Form.Group className="my-2" controlId="email">
@@ -89,6 +90,7 @@ const ProfileScreen = () => {
             placeholder="Enter email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           ></Form.Control>
         </Form.Group>
         <Form.Group className="my-2" controlId="number">
@@ -98,6 +100,7 @@ const ProfileScreen = () => {
             placeholder="Enter number"
             value={number}
             onChange={(e) => setNumber(e.target.value)}
+            required
           ></Form.Control>
         </Form.Group>
         <Form.Group className="my-2" controlId="cid">
@@ -107,6 +110,7 @@ const ProfileScreen = () => {
             placeholder="Enter cid"
             value={cid}
             onChange={(e) => setCid(e.target.value)}
+            required
           ></Form.Control>
         </Form.Group>
         <Form.Group className="my-2" controlId="role">
@@ -119,6 +123,7 @@ const ProfileScreen = () => {
           <Form.Control
             type="file"
             onChange={(e) => setAvatar(e.target.files[0])}
+            required
           />
         </Form.Group>
         <Form.Group className="my-2" controlId="password">

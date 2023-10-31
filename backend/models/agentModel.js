@@ -28,11 +28,13 @@ const agentSchema = mongoose.Schema({
     type: Number,
     required: true,
     unique: true,
+    sparse: true,
   },
   number: {
     type: Number,
     required: true,
     unique: true,
+    sparse: true,
   },
   address: {
     type: String,

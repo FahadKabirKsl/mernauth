@@ -31,6 +31,7 @@ const userSchema = mongoose.Schema(
       type: Number,
       required: false,
       unique: true,
+      sparse: true,
     },
     // nid: {
     //   type: Number,
@@ -41,6 +42,7 @@ const userSchema = mongoose.Schema(
       type: Number,
       required: false,
       unique: true,
+      sparse: true,
     },
     avatar: {
       type: String,
