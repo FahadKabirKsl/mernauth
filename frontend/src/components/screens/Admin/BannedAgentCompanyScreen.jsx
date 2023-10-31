@@ -40,8 +40,14 @@ const BannedAgentCompanyScreen = () => {
         const name = company.name ? company.name.toLowerCase() : "";
         const id = company._id ? company._id.toLowerCase() : "";
         const email = company.email ? company.email.toLowerCase() : "";
-        const number = company.number ? company.number.toLowerCase() : "";
-        const cid = company.cid ? company.cid.toLowerCase() : "";
+        // const number = company.number ? company.number.toLowerCase() : "";
+        const number =
+          typeof company.number === "string"
+            ? company.number.toLowerCase()
+            : "";
+        // const cid = company.cid ? company.cid.toLowerCase() : "";
+        const cid =
+          typeof company.cid === "string" ? company.cid.toLowerCase() : "";
         return (
           name.includes(searchTerm.toLowerCase()) ||
           id.includes(searchTerm.toLowerCase()) ||
