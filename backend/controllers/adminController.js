@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import Agent from "../models/agentModel.js";
-import AgentCompany from "../models/agentCompanyModels.js";
+import AgentCompany from "../models/agentCompanyModel.js";
 import Banned from "../models/bannedModel.js";
 const getAllAgents = asyncHandler(async (req, res) => {
   try {

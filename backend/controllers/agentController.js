@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Agent from "../models/agentModel.js";
-import AgentCompany from "../models/agentCompanyModels.js"; // Assuming you have an AgentCompany model
+import AgentCompany from "../models/agentCompanyModel.js"; // Assuming you have an AgentCompany model
 import Banned from "../models/bannedModel.js";
 // Controller function for adding agents
 const addAgent = asyncHandler(async (req, res) => {
